@@ -25,7 +25,7 @@ from generator import generate_paper_content, build_document
 
 # ─────────────────────────────────────────────
 load_dotenv()
-BOT_TOKEN    = os.getenv("TELEGRAM_BOT_TOKEN", "")
+BOT_TOKEN    = "8781739282:AAEj9YbZ6dDrWBggZ9P7cJ4IwqVDTCeQHyo"
 GEMINI_KEY   = os.getenv("GEMINI_API_KEY", "")
 
 if not BOT_TOKEN:
