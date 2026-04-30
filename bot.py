@@ -25,7 +25,7 @@ from generator import generate_paper_content, build_document
 
 # ─────────────────────────────────────────────
 load_dotenv()
-BOT_TOKEN    = "8781739282:AAEj9YbZ6dDrWBggZ9P7cJ4IwqVDTCeQHyo"
+BOT_TOKEN    = os.getenv("TELEGRAM_BOT_TOKEN", "")
 GEMINI_KEY   = os.getenv("GEMINI_API_KEY", "")
 
 if not BOT_TOKEN:
@@ -112,7 +112,7 @@ def summary_text(sess: dict) -> str:
         f"🎓 Grade      : <b>{sess.get('grade','—')}</b>",
         f"📝 Title      : <b>{sess.get('title','—')}</b>",
         f"👤 Author     : <b>{sess.get('author','—')}</b>",
-        f"🖼 Logo       : {'✅ received' if sess.get('logo_bytes') else '❌ missing'}",
+        f"🖼 Logo       : {'✅ received' if sess.get('logo') else '❌ missing'}",
     ]
     return "\n".join(lines)
 
@@ -263,7 +263,8 @@ def handle_photo(msg: types.Message):
     file_info = bot.get_file(file_id)
     logo_bytes = bot.download_file(file_info.file_path)
 
-    sess["logo_bytes"] = logo_bytes
+    sess["logo"]       = True        # marks the step as complete for current_step()
+    sess["logo_bytes"] = logo_bytes  # actual bytes used in docx build
     log.info("Logo received for chat %s — %d bytes", chat_id, len(logo_bytes))
 
     # All steps done → show summary
